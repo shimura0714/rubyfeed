@@ -1,12 +1,24 @@
 require 'roo'
 
-xlxs = Roo::Excelx.new('./sample.xlsx')
-#xlxs.sheets.each{ | sheet |
-#  puts xlxs.sheet(sheet).row(1)
-#  puts xlxs.sheet(sheet).row(1)
-#}
+xlxs = Roo::Excelx.new('./20180330.xlsx')
 
-xlxs.each_row_streaming(offset: 2) do | e |
-  puts e.inspect
+first_row = 2
+last_row  = xlxs.last_row()
+
+dict_title = {}
+for i in first_row..last_row do
+  pid = xlxs.cell(i, "A").sub(/^c/, '')
+  title = xlxs.cell(i, "C")
+  description = xlxs.cell(i, "E")
+  dict_title[pid] = [title, description]
 end
+
+f_title = File.open('pla_tile.txt', 'w')
+f_description = File.open('pla_description.txt', 'w')
+
+dict_title.each do | pid, value |
+  f_title.puts(sprintf("'%d' => '%s'", pid, value[0]))
+  f_description.puts(sprintf("'%d' => '%s'", pid, value[1]))
+end
+
 
