@@ -1,6 +1,6 @@
 require 'roo'
 
-xlxs = Roo::Excelx.new('./20180330.xlsx')
+xlxs = Roo::Excelx.new(ARGV[0])
 
 first_row = 2
 last_row  = xlxs.last_row()
@@ -13,7 +13,7 @@ for i in first_row..last_row do
   dict_title[pid] = [title, description]
 end
 
-f_title = File.open('pla_tile.txt', 'w')
+f_title = File.open('pla_title.txt', 'w')
 f_description = File.open('pla_description.txt', 'w')
 
 dict_title.each do | pid, value |
